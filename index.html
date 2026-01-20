@@ -1,1 +1,104 @@
-prueba
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Fika · Control Horario</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 60px auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .time {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .btn-in {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .btn-out {
+      background: #f44336;
+      color: white;
+    }
+
+    .status {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Fika</h1>
+    <p>Control horario sencillo</p>
+
+    <div class="time" id="clock">--:--:--</div>
+
+    <button class="btn-in" onclick="checkIn()">Fichar entrada</button>
+    <button class="btn-out" onclick="checkOut()">Fichar salida</button>
+
+    <div class="status" id="status">No has fichado todavía</div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const time = now.toLocaleTimeString();
+      document.getElementById('clock').innerText = time;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function checkIn() {
+      document.getElementById('status').innerText =
+        "Entrada fichada a las " + new Date().toLocaleTimeString();
+    }
+
+    function checkOut() {
+      document.getElementById('status').innerText =
+        "Salida fichada a las " + new Date().toLocaleTimeString();
+    }
+  </script>
+
+</body>
+</html>
