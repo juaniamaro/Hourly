@@ -9,86 +9,22 @@
   html, body { width:100%; height:100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow:hidden; }
 
   body { background: #1b003b; }
-
   canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
 
-  .container {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    color: #fff;
-  }
+  .container { position:relative; z-index:1; display:flex; width:100%; height:100%; color:#fff; }
+  .left { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px; font-size:1.5em; line-height:1.4; text-align:center; }
+  .right { flex:1; display:flex; align-items:center; justify-content:center; }
 
-  .left {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    font-size: 1.5em;
-    line-height: 1.4;
-    text-align: center;
-  }
-
-  .right {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .login-container {
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(15px);
-    padding: 50px 35px;
-    border-radius: 15px;
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-    animation: fadeIn 1s ease forwards;
-  }
-
-  @keyframes fadeIn { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
+  .login-container { background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); padding:50px 35px; border-radius:15px; width:100%; max-width:400px; text-align:center; box-shadow:0 8px 30px rgba(0,0,0,0.3); }
 
   h1 { font-size:2em; margin-bottom:10px; letter-spacing:1px; }
   p { font-size:14px; margin-bottom:30px; color:#ddd; }
 
-  input {
-    width:100%;
-    padding:14px 15px;
-    margin:12px 0;
-    border:none;
-    border-radius:10px;
-    font-size:15px;
-    transition: all 0.3s ease;
-    outline:none;
-    background: rgba(255,255,255,0.1);
-    color:#fff;
-  }
-
+  input { width:100%; padding:14px 15px; margin:12px 0; border:none; border-radius:10px; font-size:15px; transition: all 0.3s ease; outline:none; background: rgba(255,255,255,0.1); color:#fff; }
   input::placeholder { color: #eee; }
   input:focus { background: rgba(255,255,255,0.2); box-shadow:0 0 8px rgba(255,255,255,0.5); }
 
-  button {
-    width:100%;
-    padding:15px;
-    margin-top:20px;
-    font-size:16px;
-    font-weight:bold;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    color:#fff;
-    background:#8e2de2; /* morado por defecto */
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
+  button { width:100%; padding:15px; margin-top:20px; font-size:16px; font-weight:bold; border:none; border-radius:10px; cursor:pointer; color:#fff; background:#8e2de2; transition: all 0.3s ease; }
   button:hover { background:#c33764; transform:translateY(-2px); }
   button:active { transform:translateY(1px); }
 
@@ -99,18 +35,9 @@
   .signup a { color:#4CAF50; text-decoration:none; transition: all 0.3s ease; }
   .signup a:hover { text-decoration:underline; }
 
-  .clock {
-    font-size: 3em;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
+  .clock { font-size: 3em; font-weight: bold; margin-bottom: 20px; }
 
-  /* Responsive */
-  @media(max-width:900px){
-    .container { flex-direction: column; }
-    .left, .right { flex: unset; width: 100%; }
-    .left { font-size: 1.2em; padding: 20px; margin-bottom: 20px; }
-  }
+  @media(max-width:900px){ .container{flex-direction:column;} .left, .right{flex:unset;width:100%;} .left{font-size:1.2em;padding:20px;margin-bottom:20px;} }
 </style>
 </head>
 <body>
@@ -144,120 +71,108 @@
 </div>
 
 <script>
-/* ===== LOGIN DEMO ===== */
+/* LOGIN DEMO */
 document.getElementById('loginBtn').addEventListener('click', ()=>{
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const errorMsg = document.getElementById('error-msg');
-
-  if(!email || !password){
-    errorMsg.textContent = "Todos los campos son obligatorios";
-    errorMsg.classList.add('show');
-    return;
-  }
-
+  const email=document.getElementById('email').value;
+  const password=document.getElementById('password').value;
+  const errorMsg=document.getElementById('error-msg');
+  if(!email||!password){ errorMsg.textContent="Todos los campos son obligatorios"; errorMsg.classList.add('show'); return; }
   errorMsg.classList.remove('show');
-  console.log("Email:", email, "Password:", password);
+  console.log("Email:",email,"Password:",password);
   alert("Inicio de sesión simulado. Conectar Supabase Auth aquí.");
 });
 
-/* ===== RELOJ ===== */
+/* RELOJ */
 function updateClock(){
-  const clock = document.getElementById('clock');
-  const now = new Date();
-  const h = now.getHours().toString().padStart(2,'0');
-  const m = now.getMinutes().toString().padStart(2,'0');
-  const s = now.getSeconds().toString().padStart(2,'0');
-  const weekday = now.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-  clock.textContent = `${weekday} ${h}:${m}:${s}`;
+  const clock=document.getElementById('clock');
+  const now=new Date();
+  const h=now.getHours().toString().padStart(2,'0');
+  const m=now.getMinutes().toString().padStart(2,'0');
+  const s=now.getSeconds().toString().padStart(2,'0');
+  const weekday=now.toLocaleDateString('es-ES',{ weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  clock.textContent=`${weekday} ${h}:${m}:${s}`;
 }
-setInterval(updateClock, 1000);
+setInterval(updateClock,1000);
 updateClock();
 
-/* ===== CANVAS FONDO ===== */
-const canvas = document.getElementById('bg');
-const ctx = canvas.getContext('2d');
-let width, height;
-function resize(){ width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
-window.addEventListener('resize', resize);
+/* CANVAS */
+const canvas=document.getElementById('bg');
+const ctx=canvas.getContext('2d');
+let width,height;
+function resize(){ width=canvas.width=window.innerWidth; height=canvas.height=window.innerHeight; }
+window.addEventListener('resize',resize);
 resize();
 
-let mouse = { x: width/2, y: height/2 };
-window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+let mouse={x:width/2,y:height/2};
+window.addEventListener('mousemove', e=>{ mouse.x=e.clientX; mouse.y=e.clientY; });
 
-/* Determinar colores según hora */
-function getColorByHour(){
-  const h = new Date().getHours();
-  if(h >=6 && h <12) return ['#FFD700','#FFA500','#FFFF66']; // mañana: amarillos
-  else if(h >=12 && h <18) return ['#FF4500','#FF6347','#FF69B4']; // mediodía: rojos/rosas
-  else return ['#8e2de2','#c33764','#4CAF50']; // noche: morados/verde
+function getColorsByHour(){
+  const h=new Date().getHours();
+  if(h>=6 && h<12) return ['#FFD700','#FFA500','#FFFF66']; // mañana
+  else if(h>=12 && h<18) return ['#FF4500','#FF6347','#FF69B4']; // mediodía
+  else return ['#8e2de2','#c33764','#4CAF50']; // noche
 }
 
-/* Círculos grandes */
-class Circle {
+let colors=getColorsByHour();
+
+/* Ondas tipo agua */
+class Wave{ constructor(freq,amp,phase){ this.freq=freq; this.amp=amp; this.phase=phase; } }
+const waves=[new Wave(0.008,20,0), new Wave(0.01,25,50), new Wave(0.012,15,100)];
+
+/* Círculos */
+class Circle{
   constructor(){ this.reset(); }
   reset(){
-    this.x = Math.random()*width;
-    this.y = Math.random()*height;
-    this.radius = 40 + Math.random()*60;
-    this.speed = 0.02 + Math.random()*0.05;
-    this.angle = Math.random()*Math.PI*2;
-    this.color = colors[Math.floor(Math.random()*colors.length)];
+    this.x=Math.random()*width;
+    this.y=Math.random()*height;
+    this.radius=20+Math.random()*50; // más suaves
+    this.speed=0.005+Math.random()*0.01;
+    this.angle=Math.random()*Math.PI*2;
+    this.color=colors[Math.floor(Math.random()*colors.length)];
   }
-  update(time, waves){
-    let dx = (mouse.x - this.x) * this.speed;
-    let dy = (mouse.y - this.y) * this.speed;
-
-    // interacción con ondas
-    let waveY = 0;
-    waves.forEach(w => {
-      waveY += Math.sin((this.x * w.freq) + time*0.002 + w.phase)*w.amp;
-    });
-    waveY /= waves.length;
-
-    this.x += Math.cos(this.angle + time*0.0001)*this.speed*50 + dx*0.01;
-    this.y += Math.sin(this.angle + time*0.0001)*this.speed*50 + dy*0.01 + waveY*0.1;
-
-    if(this.x - this.radius > width || this.x + this.radius < 0 || this.y - this.radius > height || this.y + this.radius < 0){
-      this.reset();
-    }
+  update(time){
+    // Movimiento ratón leve
+    let dx=(mouse.x-this.x)*0.002;
+    let dy=(mouse.y-this.y)*0.002;
+    // Interacción con ondas
+    let waveY=0;
+    waves.forEach(w=>{ waveY+=Math.sin(this.x*w.freq+time*0.002+w.phase)*w.amp; });
+    waveY/=waves.length;
+    this.x+=Math.cos(this.angle+time*0.0001)*this.speed*50+dx;
+    this.y+=Math.sin(this.angle+time*0.0001)*this.speed*50+dy+waveY*0.05;
+    if(this.x-this.radius>width||this.x+this.radius<0||this.y-this.radius>height||this.y+this.radius<0) this.reset();
   }
-  draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.radius,0,Math.PI*2); ctx.fillStyle=this.color; ctx.fill(); }
+  draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.radius,0,Math.PI*2); ctx.fillStyle=this.color+'50'; ctx.fill(); }
 }
 
-class Wave { constructor(freq, amp, phase){ this.freq=freq; this.amp=amp; this.phase=phase; } }
+const circles=[];
+for(let i=0;i<30;i++) circles.push(new Circle());
 
-let colors = getColorByHour();
-const circles = [];
-for(let i=0;i<25;i++) circles.push(new Circle());
-
-const waves = [new Wave(0.01,20,0), new Wave(0.012,25,50), new Wave(0.008,15,100)];
-
+/* Dibujar ondas */
 function drawWaves(time){
-  ctx.globalAlpha = 0.05;
+  ctx.globalAlpha=0.2;
   waves.forEach(w=>{
     ctx.beginPath();
     for(let i=0;i<width;i++){
-      let y = height*0.85 + Math.sin(i*w.freq + time*0.002 + w.phase)*w.amp;
+      let y=height*0.85+Math.sin(i*w.freq+time*0.002+w.phase)*w.amp;
       if(i===0) ctx.moveTo(i,y);
       else ctx.lineTo(i,y);
     }
     ctx.lineTo(width,height);
     ctx.lineTo(0,height);
     ctx.closePath();
-    ctx.fillStyle = colors[0]+'20'; // color con transparencia
+    ctx.fillStyle=colors[0]+'20';
     ctx.fill();
   });
-  ctx.globalAlpha = 1;
+  ctx.globalAlpha=1;
 }
 
 function animate(time){
   ctx.clearRect(0,0,width,height);
   drawWaves(time);
-  circles.forEach(c=>{c.update(time,waves); c.draw();});
+  circles.forEach(c=>{ c.update(time); c.draw(); });
   requestAnimationFrame(animate);
 }
-
 requestAnimationFrame(animate);
 </script>
 
