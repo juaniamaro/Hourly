@@ -24,6 +24,7 @@
   .left {
     flex: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 40px;
@@ -82,29 +83,34 @@
     border-radius:10px;
     cursor:pointer;
     color:#fff;
-    background:#8e2de2; /* morado */
+    background:#8e2de2; /* morado por defecto */
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
   }
 
-  button:hover { background:#c33764; transform:translateY(-2px); } /* rosa */
+  button:hover { background:#c33764; transform:translateY(-2px); }
   button:active { transform:translateY(1px); }
 
   .error { margin-top:15px; color:#ff6b6b; font-size:14px; opacity:0; transition: opacity 0.5s ease; }
   .error.show { opacity:1; }
 
   .signup { margin-top:20px; font-size:13px; color:#ccc; }
-  .signup a { color:#4CAF50; text-decoration:none; transition: all 0.3s ease; } /* verde */
+  .signup a { color:#4CAF50; text-decoration:none; transition: all 0.3s ease; }
   .signup a:hover { text-decoration:underline; }
+
+  .clock {
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
 
   /* Responsive */
   @media(max-width:900px){
     .container { flex-direction: column; }
     .left, .right { flex: unset; width: 100%; }
-    .left { font-size: 1.2em; padding: 20px; }
+    .left { font-size: 1.2em; padding: 20px; margin-bottom: 20px; }
   }
-
 </style>
 </head>
 <body>
@@ -113,10 +119,9 @@
 
 <div class="container">
   <div class="left">
-    <div>
-      <h1>Bienvenido a Fika</h1>
-      <p>Control horario sencillo y moderno para tu empresa. Ficha fácilmente desde cualquier dispositivo y lleva el control de tu equipo al siguiente nivel.</p>
-    </div>
+    <div class="clock" id="clock">00:00:00</div>
+    <h1>Bienvenido a Fika</h1>
+    <p>Control horario moderno y fácil. Ficha desde cualquier dispositivo y lleva tu equipo al siguiente nivel.</p>
   </div>
 
   <div class="right">
@@ -127,7 +132,7 @@
       <input type="email" id="email" placeholder="Correo electrónico" required>
       <input type="password" id="password" placeholder="Contraseña" required>
 
-      <button onclick="login()">Iniciar Sesión</button>
+      <button id="loginBtn">Iniciar Sesión</button>
 
       <div class="error" id="error-msg">Error demo</div>
 
@@ -139,13 +144,13 @@
 </div>
 
 <script>
-/* LOGIN DEMO */
-function login() {
+/* ===== LOGIN DEMO ===== */
+document.getElementById('loginBtn').addEventListener('click', ()=>{
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
   const errorMsg = document.getElementById('error-msg');
 
-  if (!email || !password) {
+  if(!email || !password){
     errorMsg.textContent = "Todos los campos son obligatorios";
     errorMsg.classList.add('show');
     return;
@@ -154,78 +159,103 @@ function login() {
   errorMsg.classList.remove('show');
   console.log("Email:", email, "Password:", password);
   alert("Inicio de sesión simulado. Conectar Supabase Auth aquí.");
-}
+});
 
-/* CANVAS ANIMADO */
+/* ===== RELOJ ===== */
+function updateClock(){
+  const clock = document.getElementById('clock');
+  const now = new Date();
+  const h = now.getHours().toString().padStart(2,'0');
+  const m = now.getMinutes().toString().padStart(2,'0');
+  const s = now.getSeconds().toString().padStart(2,'0');
+  const weekday = now.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  clock.textContent = `${weekday} ${h}:${m}:${s}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ===== CANVAS FONDO ===== */
 const canvas = document.getElementById('bg');
 const ctx = canvas.getContext('2d');
-
 let width, height;
-function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+function resize(){ width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
 window.addEventListener('resize', resize);
 resize();
 
-/* RATÓN */
 let mouse = { x: width/2, y: height/2 };
 window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
 
-class Circle {
-  constructor() {
-    this.reset();
-  }
+/* Determinar colores según hora */
+function getColorByHour(){
+  const h = new Date().getHours();
+  if(h >=6 && h <12) return ['#FFD700','#FFA500','#FFFF66']; // mañana: amarillos
+  else if(h >=12 && h <18) return ['#FF4500','#FF6347','#FF69B4']; // mediodía: rojos/rosas
+  else return ['#8e2de2','#c33764','#4CAF50']; // noche: morados/verde
+}
 
-  reset() {
+/* Círculos grandes */
+class Circle {
+  constructor(){ this.reset(); }
+  reset(){
     this.x = Math.random()*width;
     this.y = Math.random()*height;
-    this.radius = 10 + Math.random()*30;
-    this.speed = 0.05 + Math.random()*0.2;
+    this.radius = 40 + Math.random()*60;
+    this.speed = 0.02 + Math.random()*0.05;
     this.angle = Math.random()*Math.PI*2;
-    this.color = `hsla(${200 + Math.random()*160}, 70%, 60%, 0.3)`; // morado/rosa/verde
+    this.color = colors[Math.floor(Math.random()*colors.length)];
   }
-
-  update(time) {
-    // Movimiento según mouse
+  update(time, waves){
     let dx = (mouse.x - this.x) * this.speed;
     let dy = (mouse.y - this.y) * this.speed;
-    this.x += Math.cos(this.angle + time*0.0001) + dx*0.01;
-    this.y += Math.sin(this.angle + time*0.0001) + dy*0.01;
+
+    // interacción con ondas
+    let waveY = 0;
+    waves.forEach(w => {
+      waveY += Math.sin((this.x * w.freq) + time*0.002 + w.phase)*w.amp;
+    });
+    waveY /= waves.length;
+
+    this.x += Math.cos(this.angle + time*0.0001)*this.speed*50 + dx*0.01;
+    this.y += Math.sin(this.angle + time*0.0001)*this.speed*50 + dy*0.01 + waveY*0.1;
 
     if(this.x - this.radius > width || this.x + this.radius < 0 || this.y - this.radius > height || this.y + this.radius < 0){
       this.reset();
     }
   }
-
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
+  draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.radius,0,Math.PI*2); ctx.fillStyle=this.color; ctx.fill(); }
 }
 
+class Wave { constructor(freq, amp, phase){ this.freq=freq; this.amp=amp; this.phase=phase; } }
+
+let colors = getColorByHour();
 const circles = [];
-for(let i=0;i<35;i++) circles.push(new Circle());
+for(let i=0;i<25;i++) circles.push(new Circle());
+
+const waves = [new Wave(0.01,20,0), new Wave(0.012,25,50), new Wave(0.008,15,100)];
+
+function drawWaves(time){
+  ctx.globalAlpha = 0.05;
+  waves.forEach(w=>{
+    ctx.beginPath();
+    for(let i=0;i<width;i++){
+      let y = height*0.85 + Math.sin(i*w.freq + time*0.002 + w.phase)*w.amp;
+      if(i===0) ctx.moveTo(i,y);
+      else ctx.lineTo(i,y);
+    }
+    ctx.lineTo(width,height);
+    ctx.lineTo(0,height);
+    ctx.closePath();
+    ctx.fillStyle = colors[0]+'20'; // color con transparencia
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+}
 
 function animate(time){
   ctx.clearRect(0,0,width,height);
-  circles.forEach(c => { c.update(time); c.draw(); });
   drawWaves(time);
+  circles.forEach(c=>{c.update(time,waves); c.draw();});
   requestAnimationFrame(animate);
-}
-
-/* ONDAS SUAVES */
-function drawWaves(time){
-  ctx.beginPath();
-  for(let i=0;i<width;i++){
-    let y = height*0.9 + Math.sin((i*0.01)+time*0.002)*25;
-    if(i===0) ctx.moveTo(i,y);
-    else ctx.lineTo(i,y);
-  }
-  ctx.lineTo(width,height);
-  ctx.lineTo(0,height);
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(200,150,255,0.05)'; // onda morada clara
-  ctx.fill();
 }
 
 requestAnimationFrame(animate);
