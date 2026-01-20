@@ -2,101 +2,122 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Fika · Control Horario</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <title>Fika · Iniciar Sesión</title>
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: #f4f6f8;
       margin: 0;
-      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
-    .container {
-      max-width: 400px;
-      margin: 60px auto;
-      background: #ffffff;
-      padding: 30px;
+    .login-container {
+      background: #fff;
+      padding: 40px 30px;
       border-radius: 10px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
       text-align: center;
     }
 
-    h1 {
+    .login-container h1 {
       margin-bottom: 10px;
       color: #222;
     }
 
-    p {
+    .login-container p {
+      margin-bottom: 30px;
       color: #666;
       font-size: 14px;
     }
 
-    .time {
-      font-size: 32px;
-      font-weight: bold;
-      margin: 20px 0;
+    .login-container input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
     }
 
-    button {
+    .login-container button {
       width: 100%;
-      padding: 15px;
-      margin-top: 10px;
+      padding: 14px;
+      margin-top: 15px;
       font-size: 16px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-    }
-
-    .btn-in {
-      background: #4CAF50;
+      background-color: #4CAF50;
       color: white;
+      transition: background-color 0.3s;
     }
 
-    .btn-out {
-      background: #f44336;
-      color: white;
+    .login-container button:hover {
+      background-color: #45a049;
     }
 
-    .status {
-      margin-top: 20px;
-      font-weight: bold;
+    .login-container .error {
+      color: red;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    .login-container .signup {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .login-container .signup a {
+      color: #4CAF50;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <div class="login-container">
     <h1>Fika</h1>
-    <p>Control horario sencillo</p>
+    <p>Inicia sesión para fichar</p>
 
-    <div class="time" id="clock">--:--:--</div>
+    <input type="email" id="email" placeholder="Correo electrónico" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
 
-    <button class="btn-in" onclick="checkIn()">Fichar entrada</button>
-    <button class="btn-out" onclick="checkOut()">Fichar salida</button>
+    <button onclick="login()">Iniciar Sesión</button>
 
-    <div class="status" id="status">No has fichado todavía</div>
+    <div class="error" id="error-msg"></div>
+
+    <div class="signup">
+      ¿No tienes cuenta? <a href="#">Regístrate</a>
+    </div>
   </div>
 
   <script>
-    function updateClock() {
-      const now = new Date();
-      const time = now.toLocaleTimeString();
-      document.getElementById('clock').innerText = time;
-    }
+    // Función de login demo (reemplazar por Supabase Auth)
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorMsg = document.getElementById('error-msg');
 
-    setInterval(updateClock, 1000);
-    updateClock();
+      // Validación simple
+      if (!email || !password) {
+        errorMsg.textContent = "Todos los campos son obligatorios";
+        return;
+      }
 
-    function checkIn() {
-      document.getElementById('status').innerText =
-        "Entrada fichada a las " + new Date().toLocaleTimeString();
-    }
+      // Demo: solo mostrar datos
+      console.log("Email:", email);
+      console.log("Password:", password);
 
-    function checkOut() {
-      document.getElementById('status').innerText =
-        "Salida fichada a las " + new Date().toLocaleTimeString();
+      // Mensaje de ejemplo
+      errorMsg.textContent = "";
+      alert("Inicio de sesión simulado. Conecta aquí Supabase Auth");
     }
   </script>
 
