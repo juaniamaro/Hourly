@@ -3,44 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fika · Iniciar Sesión</title>
-
+<title>Fika · Bienvenido</title>
 <style>
-  /* Reset y body */
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    height: 100vh;
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:100%; height:100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow:hidden; }
+
+  body { background: #1b003b; }
+
+  canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
+
+  .container {
+    position: relative;
+    z-index: 1;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    width: 100%;
+    height: 100%;
     color: #fff;
   }
 
-  /* Animación de fondo sutil */
-  body::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-    animation: moveBackground 20s linear infinite;
-    z-index: 0;
+  .left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    font-size: 1.5em;
+    line-height: 1.4;
+    text-align: center;
   }
 
-  @keyframes moveBackground {
-    0% { transform: rotate(0deg) translate(0,0); }
-    100% { transform: rotate(360deg) translate(0,0); }
+  .right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  /* Container login */
   .login-container {
-    position: relative;
-    z-index: 1;
     background: rgba(255,255,255,0.05);
     backdrop-filter: blur(15px);
     padding: 50px 35px;
@@ -52,123 +51,95 @@
     animation: fadeIn 1s ease forwards;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
 
-  h1 {
-    font-size: 2em;
-    margin-bottom: 10px;
-    letter-spacing: 1px;
-  }
+  h1 { font-size:2em; margin-bottom:10px; letter-spacing:1px; }
+  p { font-size:14px; margin-bottom:30px; color:#ddd; }
 
-  p {
-    font-size: 14px;
-    margin-bottom: 30px;
-    color: #ddd;
-  }
-
-  /* Inputs animados */
   input {
-    width: 100%;
-    padding: 14px 15px;
-    margin: 12px 0;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
+    width:100%;
+    padding:14px 15px;
+    margin:12px 0;
+    border:none;
+    border-radius:10px;
+    font-size:15px;
     transition: all 0.3s ease;
-    outline: none;
+    outline:none;
     background: rgba(255,255,255,0.1);
-    color: #fff;
+    color:#fff;
   }
 
-  input::placeholder {
-    color: #eee;
-  }
+  input::placeholder { color: #eee; }
+  input:focus { background: rgba(255,255,255,0.2); box-shadow:0 0 8px rgba(255,255,255,0.5); }
 
-  input:focus {
-    background: rgba(255,255,255,0.2);
-    box-shadow: 0 0 8px rgba(255,255,255,0.5);
-  }
-
-  /* Botón animado */
   button {
-    width: 100%;
-    padding: 15px;
-    margin-top: 20px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    color: #fff;
-    background: #4CAF50;
+    width:100%;
+    padding:15px;
+    margin-top:20px;
+    font-size:16px;
+    font-weight:bold;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    color:#fff;
+    background:#8e2de2; /* morado */
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
   }
 
-  button:hover {
-    background: #43a047;
-    transform: translateY(-2px);
-  }
+  button:hover { background:#c33764; transform:translateY(-2px); } /* rosa */
+  button:active { transform:translateY(1px); }
 
-  button:active {
-    transform: translateY(1px);
-  }
+  .error { margin-top:15px; color:#ff6b6b; font-size:14px; opacity:0; transition: opacity 0.5s ease; }
+  .error.show { opacity:1; }
 
-  /* Error mensaje */
-  .error {
-    margin-top: 15px;
-    color: #ff6b6b;
-    font-size: 14px;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
+  .signup { margin-top:20px; font-size:13px; color:#ccc; }
+  .signup a { color:#4CAF50; text-decoration:none; transition: all 0.3s ease; } /* verde */
+  .signup a:hover { text-decoration:underline; }
 
-  .error.show {
-    opacity: 1;
-  }
-
-  /* Signup link */
-  .signup {
-    margin-top: 20px;
-    font-size: 13px;
-    color: #ccc;
-  }
-
-  .signup a {
-    color: #4CAF50;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-
-  .signup a:hover {
-    text-decoration: underline;
+  /* Responsive */
+  @media(max-width:900px){
+    .container { flex-direction: column; }
+    .left, .right { flex: unset; width: 100%; }
+    .left { font-size: 1.2em; padding: 20px; }
   }
 
 </style>
 </head>
 <body>
 
-<div class="login-container">
-  <h1>Fika</h1>
-  <p>Inicia sesión para fichar</p>
+<canvas id="bg"></canvas>
 
-  <input type="email" id="email" placeholder="Correo electrónico" required>
-  <input type="password" id="password" placeholder="Contraseña" required>
+<div class="container">
+  <div class="left">
+    <div>
+      <h1>Bienvenido a Fika</h1>
+      <p>Control horario sencillo y moderno para tu empresa. Ficha fácilmente desde cualquier dispositivo y lleva el control de tu equipo al siguiente nivel.</p>
+    </div>
+  </div>
 
-  <button onclick="login()">Iniciar Sesión</button>
+  <div class="right">
+    <div class="login-container">
+      <h1>Fika</h1>
+      <p>Inicia sesión para fichar</p>
 
-  <div class="error" id="error-msg">Error demo</div>
+      <input type="email" id="email" placeholder="Correo electrónico" required>
+      <input type="password" id="password" placeholder="Contraseña" required>
 
-  <div class="signup">
-    ¿No tienes cuenta? <a href="#">Regístrate</a>
+      <button onclick="login()">Iniciar Sesión</button>
+
+      <div class="error" id="error-msg">Error demo</div>
+
+      <div class="signup">
+        ¿No tienes cuenta? <a href="#">Regístrate</a>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
+/* LOGIN DEMO */
 function login() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
@@ -180,15 +151,84 @@ function login() {
     return;
   }
 
-  // Ocultar mensaje si todo bien
   errorMsg.classList.remove('show');
-
-  // Demo: mostrar login en consola
   console.log("Email:", email, "Password:", password);
-
-  // Aquí conectarías con Supabase Auth
   alert("Inicio de sesión simulado. Conectar Supabase Auth aquí.");
 }
+
+/* CANVAS ANIMADO */
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+
+let width, height;
+function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize);
+resize();
+
+/* RATÓN */
+let mouse = { x: width/2, y: height/2 };
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+class Circle {
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.x = Math.random()*width;
+    this.y = Math.random()*height;
+    this.radius = 10 + Math.random()*30;
+    this.speed = 0.05 + Math.random()*0.2;
+    this.angle = Math.random()*Math.PI*2;
+    this.color = `hsla(${200 + Math.random()*160}, 70%, 60%, 0.3)`; // morado/rosa/verde
+  }
+
+  update(time) {
+    // Movimiento según mouse
+    let dx = (mouse.x - this.x) * this.speed;
+    let dy = (mouse.y - this.y) * this.speed;
+    this.x += Math.cos(this.angle + time*0.0001) + dx*0.01;
+    this.y += Math.sin(this.angle + time*0.0001) + dy*0.01;
+
+    if(this.x - this.radius > width || this.x + this.radius < 0 || this.y - this.radius > height || this.y + this.radius < 0){
+      this.reset();
+    }
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+}
+
+const circles = [];
+for(let i=0;i<35;i++) circles.push(new Circle());
+
+function animate(time){
+  ctx.clearRect(0,0,width,height);
+  circles.forEach(c => { c.update(time); c.draw(); });
+  drawWaves(time);
+  requestAnimationFrame(animate);
+}
+
+/* ONDAS SUAVES */
+function drawWaves(time){
+  ctx.beginPath();
+  for(let i=0;i<width;i++){
+    let y = height*0.9 + Math.sin((i*0.01)+time*0.002)*25;
+    if(i===0) ctx.moveTo(i,y);
+    else ctx.lineTo(i,y);
+  }
+  ctx.lineTo(width,height);
+  ctx.lineTo(0,height);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(200,150,255,0.05)'; // onda morada clara
+  ctx.fill();
+}
+
+requestAnimationFrame(animate);
 </script>
 
 </body>
