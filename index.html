@@ -1,125 +1,195 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fika · Iniciar Sesión</title>
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fika · Iniciar Sesión</title>
 
-    .login-container {
-      background: #fff;
-      padding: 40px 30px;
-      border-radius: 10px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
+<style>
+  /* Reset y body */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: #fff;
+  }
 
-    .login-container h1 {
-      margin-bottom: 10px;
-      color: #222;
-    }
+  /* Animación de fondo sutil */
+  body::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    animation: moveBackground 20s linear infinite;
+    z-index: 0;
+  }
 
-    .login-container p {
-      margin-bottom: 30px;
-      color: #666;
-      font-size: 14px;
-    }
+  @keyframes moveBackground {
+    0% { transform: rotate(0deg) translate(0,0); }
+    100% { transform: rotate(360deg) translate(0,0); }
+  }
 
-    .login-container input {
-      width: 100%;
-      padding: 12px 15px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-    }
+  /* Container login */
+  .login-container {
+    position: relative;
+    z-index: 1;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px);
+    padding: 50px 35px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    animation: fadeIn 1s ease forwards;
+  }
 
-    .login-container button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 15px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background-color: #4CAF50;
-      color: white;
-      transition: background-color 0.3s;
-    }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-    .login-container button:hover {
-      background-color: #45a049;
-    }
+  h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
 
-    .login-container .error {
-      color: red;
-      margin-top: 10px;
-      font-size: 13px;
-    }
+  p {
+    font-size: 14px;
+    margin-bottom: 30px;
+    color: #ddd;
+  }
 
-    .login-container .signup {
-      margin-top: 15px;
-      font-size: 13px;
-      color: #666;
-    }
+  /* Inputs animados */
+  input {
+    width: 100%;
+    padding: 14px 15px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+  }
 
-    .login-container .signup a {
-      color: #4CAF50;
-      text-decoration: none;
-    }
-  </style>
+  input::placeholder {
+    color: #eee;
+  }
+
+  input:focus {
+    background: rgba(255,255,255,0.2);
+    box-shadow: 0 0 8px rgba(255,255,255,0.5);
+  }
+
+  /* Botón animado */
+  button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #fff;
+    background: #4CAF50;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button:hover {
+    background: #43a047;
+    transform: translateY(-2px);
+  }
+
+  button:active {
+    transform: translateY(1px);
+  }
+
+  /* Error mensaje */
+  .error {
+    margin-top: 15px;
+    color: #ff6b6b;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .error.show {
+    opacity: 1;
+  }
+
+  /* Signup link */
+  .signup {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #ccc;
+  }
+
+  .signup a {
+    color: #4CAF50;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .signup a:hover {
+    text-decoration: underline;
+  }
+
+</style>
 </head>
 <body>
 
-  <div class="login-container">
-    <h1>Fika</h1>
-    <p>Inicia sesión para fichar</p>
+<div class="login-container">
+  <h1>Fika</h1>
+  <p>Inicia sesión para fichar</p>
 
-    <input type="email" id="email" placeholder="Correo electrónico" required>
-    <input type="password" id="password" placeholder="Contraseña" required>
+  <input type="email" id="email" placeholder="Correo electrónico" required>
+  <input type="password" id="password" placeholder="Contraseña" required>
 
-    <button onclick="login()">Iniciar Sesión</button>
+  <button onclick="login()">Iniciar Sesión</button>
 
-    <div class="error" id="error-msg"></div>
+  <div class="error" id="error-msg">Error demo</div>
 
-    <div class="signup">
-      ¿No tienes cuenta? <a href="#">Regístrate</a>
-    </div>
+  <div class="signup">
+    ¿No tienes cuenta? <a href="#">Regístrate</a>
   </div>
+</div>
 
-  <script>
-    // Función de login demo (reemplazar por Supabase Auth)
-    function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const errorMsg = document.getElementById('error-msg');
+<script>
+function login() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const errorMsg = document.getElementById('error-msg');
 
-      // Validación simple
-      if (!email || !password) {
-        errorMsg.textContent = "Todos los campos son obligatorios";
-        return;
-      }
+  if (!email || !password) {
+    errorMsg.textContent = "Todos los campos son obligatorios";
+    errorMsg.classList.add('show');
+    return;
+  }
 
-      // Demo: solo mostrar datos
-      console.log("Email:", email);
-      console.log("Password:", password);
+  // Ocultar mensaje si todo bien
+  errorMsg.classList.remove('show');
 
-      // Mensaje de ejemplo
-      errorMsg.textContent = "";
-      alert("Inicio de sesión simulado. Conecta aquí Supabase Auth");
-    }
-  </script>
+  // Demo: mostrar login en consola
+  console.log("Email:", email, "Password:", password);
+
+  // Aquí conectarías con Supabase Auth
+  alert("Inicio de sesión simulado. Conectar Supabase Auth aquí.");
+}
+</script>
 
 </body>
 </html>
