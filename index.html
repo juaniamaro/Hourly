@@ -142,13 +142,13 @@ svg{
 function getTheme(){
   const h = new Date().getHours();
 
-  if(h>=6 && h<14){
+  if(h>=6 && h<12){
     return {
       bg:'#D6A000',
       colors:['#FFF0A6','#FCF1BB','#FCFADC']
     };
   }
-  if(h>=12 && h<20){
+  if(h>=14 && h<20){
     return {
       bg:'#5A0F14',
       colors:['#FF4D6D','#C9184A','#FF758F']
