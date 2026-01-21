@@ -32,16 +32,9 @@
   .signup a { color:#4CAF50; text-decoration:none; transition: all 0.3s ease; }
   .signup a:hover { text-decoration:underline; }
 
-  .clock { font-size: 2.5em; font-weight: bold; margin-bottom: 20px; }
+  .clock { font-size: 2.5em; font-weight: bold; margin-top:20px; }
 
-  /* SVG Logo */
-  svg { width: 250px; height: 100px; margin-bottom: 20px; }
-
-  .hourglass { transform-origin: center; animation: flip 4s infinite ease-in-out; }
-  @keyframes flip { 0%,50%{transform:rotate(0deg);} 50%,100%{transform:rotate(180deg);} }
-
-  .sand { fill: gold; animation: drop 2s infinite linear; }
-  @keyframes drop { 0%{transform:scaleY(0);} 50%{transform:scaleY(1);} 100%{transform:scaleY(0);} }
+  svg { width: 280px; height: 100px; margin-bottom: 20px; }
 
   @media(max-width:900px){ .container{flex-direction:column;} .left, .right{flex:unset;width:100%;} .left{padding:20px;margin-bottom:20px;} }
 </style>
@@ -52,22 +45,17 @@
 
 <div class="container">
   <div class="left">
-    <!-- Logo Animated -->
-    <svg viewBox="0 0 300 150">
-      <text x="0" y="100" font-size="80" fill="#8e2de2" font-family="Arial, sans-serif">HOURL</text>
-      <g class="hourglass" transform="translate(230,70)">
-        <polygon class="sand" points="-20,-40 20,-40 0,0"></polygon>
-        <polygon class="sand" points="-20,40 20,40 0,0"></polygon>
-        <line x1="-20" y1="-40" x2="20" y2="-40" stroke="#8e2de2" stroke-width="4"/>
-        <line x1="-20" y1="40" x2="20" y2="40" stroke="#8e2de2" stroke-width="4"/>
-        <line x1="-20" y1="-40" x2="0" y2="0" stroke="#8e2de2" stroke-width="4"/>
-        <line x1="20" y1="-40" x2="0" y2="0" stroke="#8e2de2" stroke-width="4"/>
-        <line x1="-20" y1="40" x2="0" y2="0" stroke="#8e2de2" stroke-width="4"/>
-        <line x1="20" y1="40" x2="0" y2="0" stroke="#8e2de2" stroke-width="4"/>
+    <!-- Logo HOURLY con O como reloj -->
+    <svg id="hourlyLogo" viewBox="0 0 300 100">
+      <text x="0" y="80" font-size="80" fill="#8e2de2" font-family="Arial, sans-serif">H</text>
+      <g id="clockO" transform="translate(50,50)">
+        <circle cx="0" cy="0" r="35" stroke="#8e2de2" stroke-width="5" fill="none"/>
+        <line id="secHand" x1="0" y1="0" x2="0" y2="-30" stroke="#c33764" stroke-width="3" stroke-linecap="round"/>
       </g>
+      <text x="90" y="80" font-size="80" fill="#8e2de2" font-family="Arial, sans-serif">URLY</text>
     </svg>
 
-    <!-- Clock -->
+    <!-- Reloj grande debajo -->
     <div class="clock" id="clock">00:00:00</div>
   </div>
 
@@ -94,7 +82,7 @@ document.getElementById('loginBtn').addEventListener('click', ()=>{
   alert("Inicio de sesión simulado. Conectar Supabase Auth aquí.");
 });
 
-/* RELOJ */
+/* RELOJ GRANDE */
 function updateClock(){
   const clock=document.getElementById('clock');
   const now=new Date();
@@ -106,6 +94,17 @@ function updateClock(){
 }
 setInterval(updateClock,1000);
 updateClock();
+
+/* ANIMACIÓN RELOJ DE LA O */
+function updateClockO(){
+  const now = new Date();
+  const sec = now.getSeconds();
+  const secHand = document.getElementById('secHand');
+  const angle = (sec/60)*360; // grados
+  secHand.setAttribute('transform', `rotate(${angle})`);
+}
+setInterval(updateClockO,1000);
+updateClockO();
 
 /* CANVAS FONDO */
 const canvas=document.getElementById('bg');
