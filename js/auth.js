@@ -9,10 +9,10 @@ const supabaseClient = supabase.createClient(
 
 async function login(email, password){
   const { data, error } = await supabaseClient
-    .from('trabajadores')
+    .from('TRABAJADORES')
     .select('*')
     .eq('email', email)
-    .eq('password', password) // ⚠️ texto plano
+    .eq('password', password) // 
     .single();
 
   if(error || !data){
