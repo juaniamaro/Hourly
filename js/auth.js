@@ -7,22 +7,21 @@ const supabaseClient = supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-// LOGIN usando la función RPC login_trabajador
-async function login(email, password) {
+// LOGIN usando función RPC login_trabajador
+async function login(email, password){
   const { data, error } = await supabaseClient.rpc('login_trabajador', {
     _email: email,
     _password: password
   });
 
-  if (error || !data || data.length === 0) {
+  console.log('Login RPC data:', data, 'error:', error);
+
+  if(error || !data || data.length===0){
     alert('Credenciales incorrectas');
-    console.error(error);
     return;
   }
 
-  // Guardar sesión en sessionStorage
+  // Guardar usuario en sessionStorage
   sessionStorage.setItem('user', JSON.stringify(data[0]));
-
-  // Redirigir a dashboard
   window.location.href = 'dashboard.html';
 }
