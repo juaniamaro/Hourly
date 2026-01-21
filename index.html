@@ -255,8 +255,8 @@ animate();
 
 <script>
 function handleLogin(){
-  const email = document.querySelector('input[type="email"]').value;
-  const password = document.querySelector('input[type="password"]').value;
+  const email = String(document.getElementById('email').value);
+const password = String(document.getElementById('password').value);
 
   login(email, password);
 }
