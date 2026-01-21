@@ -188,26 +188,66 @@ setInterval(updateClockO,1000);
 updateClockO();
 
 /* =======================
-   CANVAS FONDO
+   CANVAS FONDO (ONDAS)
 ======================= */
 const canvas=document.getElementById('bg');
 const ctx=canvas.getContext('2d');
 let w,h;
-function resize(){w=canvas.width=innerWidth;h=canvas.height=innerHeight}
-window.onresize=resize; resize();
 
-let mouse={x:w/2,y:h/2};
-window.onmousemove=e=>{mouse.x=e.clientX;mouse.y=e.clientY};
+function resize(){
+  w = canvas.width = innerWidth;
+  h = canvas.height = innerHeight;
+}
+window.onresize = resize;
+resize();
 
 /* Ondas */
 class Wave{
-  constructor(f,a,p){this.f=f;this.a=a;this.p=p}
+  constructor(f,a,p){
+    this.f=f; // frecuencia
+    this.a=a; // amplitud
+    this.p=p; // fase
+  }
 }
+
 const waves=[
   new Wave(0.008,25,0),
   new Wave(0.01,30,50),
   new Wave(0.012,20,100)
 ];
+
+function drawWaves(t){
+  ctx.globalAlpha = 0.25;
+
+  waves.forEach(wv=>{
+    ctx.beginPath();
+
+    for(let x=0;x<w;x++){
+      let y =
+        h*0.85 +
+        Math.sin(x*wv.f + t*0.002 + wv.p) * wv.a;
+
+      x ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+    }
+
+    ctx.lineTo(w,h);
+    ctx.lineTo(0,h);
+    ctx.closePath();
+
+    ctx.fillStyle = colors[0] + '33';
+    ctx.fill();
+  });
+
+  ctx.globalAlpha = 1;
+}
+
+function animate(t){
+  ctx.clearRect(0,0,w,h);
+  drawWaves(t);
+  requestAnimationFrame(animate);
+}
+
+animate();
 </script>
 </body>
 </html>
