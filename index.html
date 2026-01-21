@@ -4,186 +4,265 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hourly · Login</title>
+
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html, body { width:100%; height:100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow:hidden; }
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  width:100%;
+  height:100%;
+  font-family:'Segoe UI',Tahoma,Verdana,sans-serif;
+  overflow:hidden;
+}
 
-  body { background: #1b003b; }
-  canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
+canvas{
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  z-index:0;
+}
 
-  .container { position:relative; z-index:1; display:flex; width:100%; height:100%; color:#fff; }
-  .left { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px; text-align:center; }
-  .right { flex:1; display:flex; align-items:center; justify-content:center; }
+.container{
+  position:relative;
+  z-index:1;
+  display:flex;
+  width:100%;
+  height:100%;
+  color:#fff;
+}
 
-  .login-container { background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); padding:50px 35px; border-radius:15px; width:100%; max-width:400px; text-align:center; box-shadow:0 8px 30px rgba(0,0,0,0.3); }
+.left,.right{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-  input { width:100%; padding:14px 15px; margin:12px 0; border:none; border-radius:10px; font-size:15px; transition: all 0.3s ease; outline:none; background: rgba(255,255,255,0.1); color:#fff; }
-  input::placeholder { color: #eee; }
-  input:focus { background: rgba(255,255,255,0.2); box-shadow:0 0 8px rgba(255,255,255,0.5); }
+.left{
+  flex-direction:column;
+  text-align:center;
+  padding:40px;
+}
 
-  button { width:100%; padding:15px; margin-top:20px; font-size:16px; font-weight:bold; border:none; border-radius:10px; cursor:pointer; color:#fff; background:#8e2de2; transition: all 0.3s ease; }
-  button:hover { background:#c33764; transform:translateY(-2px); }
-  button:active { transform:translateY(1px); }
+.login-container{
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(15px);
+  padding:50px 35px;
+  border-radius:16px;
+  width:100%;
+  max-width:400px;
+  box-shadow:0 10px 35px rgba(0,0,0,0.35);
+}
 
-  .error { margin-top:15px; color:#ff6b6b; font-size:14px; opacity:0; transition: opacity 0.5s ease; }
-  .error.show { opacity:1; }
+input{
+  width:100%;
+  padding:14px;
+  margin:12px 0;
+  border:none;
+  border-radius:10px;
+  background:rgba(255,255,255,0.15);
+  color:#fff;
+  font-size:15px;
+  outline:none;
+}
 
-  .signup { margin-top:20px; font-size:13px; color:#ccc; }
-  .signup a { color:#4CAF50; text-decoration:none; transition: all 0.3s ease; }
-  .signup a:hover { text-decoration:underline; }
+input::placeholder{color:#eee}
 
-  .clock { font-size: 2.5em; font-weight: bold; margin-top:20px; }
+button{
+  width:100%;
+  padding:15px;
+  margin-top:20px;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  font-weight:bold;
+  color:#fff;
+  cursor:pointer;
+  background:linear-gradient(135deg,#8e2de2,#c33764);
+}
 
-  svg { width: 280px; height: 100px; margin-bottom: 20px; }
+button:hover{opacity:0.9}
 
-  @media(max-width:900px){ .container{flex-direction:column;} .left, .right{flex:unset;width:100%;} .left{padding:20px;margin-bottom:20px;} }
+.clock{
+  font-size:2.3em;
+  font-weight:bold;
+  margin-top:20px;
+}
+
+svg{
+  width:280px;
+  height:100px;
+  margin-bottom:10px;
+}
+
+@media(max-width:900px){
+  .container{flex-direction:column}
+}
 </style>
 </head>
-<body>
 
+<body>
 <canvas id="bg"></canvas>
 
 <div class="container">
+
   <div class="left">
-    <!-- Logo HOURLY con O como reloj -->
-    <svg id="hourlyLogo" viewBox="0 0 300 100">
-      <text x="0" y="80" font-size="80" fill="#8e2de2" font-family="Arial, sans-serif">H</text>
-      <g id="clockO" transform="translate(50,50)">
-        <circle cx="0" cy="0" r="35" stroke="#8e2de2" stroke-width="5" fill="none"/>
-        <line id="secHand" x1="0" y1="0" x2="0" y2="-30" stroke="#c33764" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- LOGO HOURLY -->
+    <svg viewBox="0 0 300 100">
+      <text x="0" y="80" font-size="80" fill="#ffffff">H</text>
+
+      <!-- O como reloj (más pequeña) -->
+      <g id="clockO" transform="translate(52,55)">
+        <circle cx="0" cy="0" r="22" stroke="#ffffff" stroke-width="4" fill="none"/>
+        <line id="secHand" x1="0" y1="0" x2="0" y2="-16"
+              stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
       </g>
-      <text x="90" y="80" font-size="80" fill="#8e2de2" font-family="Arial, sans-serif">URLY</text>
+
+      <text x="85" y="80" font-size="80" fill="#ffffff">URLY</text>
     </svg>
 
-    <!-- Reloj grande debajo -->
-    <div class="clock" id="clock">00:00:00</div>
+    <div class="clock" id="clock"></div>
+
   </div>
 
   <div class="right">
     <div class="login-container">
-      <input type="email" id="email" placeholder="Correo electrónico" required>
-      <input type="password" id="password" placeholder="Contraseña" required>
-      <button id="loginBtn">Iniciar Sesión</button>
-      <div class="error" id="error-msg">Error demo</div>
-      <div class="signup">¿No tienes cuenta? <a href="#">Regístrate</a></div>
+      <input type="email" placeholder="Correo electrónico">
+      <input type="password" placeholder="Contraseña">
+      <button>Iniciar sesión</button>
     </div>
   </div>
+
 </div>
 
 <script>
-/* LOGIN DEMO */
-document.getElementById('loginBtn').addEventListener('click', ()=>{
-  const email=document.getElementById('email').value;
-  const password=document.getElementById('password').value;
-  const errorMsg=document.getElementById('error-msg');
-  if(!email||!password){ errorMsg.textContent="Todos los campos son obligatorios"; errorMsg.classList.add('show'); return; }
-  errorMsg.classList.remove('show');
-  console.log("Email:",email,"Password:",password);
-  alert("Inicio de sesión simulado. Conectar Supabase Auth aquí.");
-});
+/* =======================
+   COLORES SEGÚN LA HORA
+======================= */
+function getTheme(){
+  const h = new Date().getHours();
 
-/* RELOJ GRANDE */
+  if(h>=6 && h<12){
+    return {
+      bg:'#FFF3B0',
+      colors:['#FFD60A','#FFB703','#FFE66D']
+    };
+  }
+  if(h>=12 && h<20){
+    return {
+      bg:'#5A0F14',
+      colors:['#FF4D6D','#C9184A','#FF758F']
+    };
+  }
+  return {
+    bg:'#1B003B',
+    colors:['#8E2DE2','#C33764','#5F0F99']
+  };
+}
+
+const theme = getTheme();
+document.body.style.background = theme.bg;
+let colors = theme.colors;
+
+/* =======================
+   RELOJ GRANDE
+======================= */
 function updateClock(){
-  const clock=document.getElementById('clock');
   const now=new Date();
-  const h=now.getHours().toString().padStart(2,'0');
-  const m=now.getMinutes().toString().padStart(2,'0');
-  const s=now.getSeconds().toString().padStart(2,'0');
-  const weekday=now.toLocaleDateString('es-ES',{ weekday:'long', day:'numeric', month:'long', year:'numeric' });
-  clock.textContent=`${weekday} ${h}:${m}:${s}`;
+  document.getElementById('clock').textContent =
+    now.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'})+
+    ' · '+now.toLocaleTimeString();
 }
 setInterval(updateClock,1000);
 updateClock();
 
-/* ANIMACIÓN RELOJ DE LA O */
+/* =======================
+   RELOJ DE LA O
+======================= */
 function updateClockO(){
-  const now = new Date();
-  const sec = now.getSeconds();
-  const secHand = document.getElementById('secHand');
-  const angle = (sec/60)*360; // grados
-  secHand.setAttribute('transform', `rotate(${angle})`);
+  const sec=new Date().getSeconds();
+  document.getElementById('secHand')
+    .setAttribute('transform',`rotate(${sec*6})`);
 }
 setInterval(updateClockO,1000);
 updateClockO();
 
-/* CANVAS FONDO */
+/* =======================
+   CANVAS FONDO
+======================= */
 const canvas=document.getElementById('bg');
 const ctx=canvas.getContext('2d');
-let width,height;
-function resize(){ width=canvas.width=window.innerWidth; height=canvas.height=window.innerHeight; }
-window.addEventListener('resize',resize);
-resize();
+let w,h;
+function resize(){w=canvas.width=innerWidth;h=canvas.height=innerHeight}
+window.onresize=resize; resize();
 
-let mouse={x:width/2,y:height/2};
-window.addEventListener('mousemove', e=>{ mouse.x=e.clientX; mouse.y=e.clientY; });
+let mouse={x:w/2,y:h/2};
+window.onmousemove=e=>{mouse.x=e.clientX;mouse.y=e.clientY};
 
-function getColorsByHour(){
-  const h=new Date().getHours();
-  if(h>=6 && h<12) return ['#FFD700','#FFA500','#FFFF66']; // mañana
-  else if(h>=12 && h<18) return ['#FF4500','#FF6347','#FF69B4']; // mediodía
-  else return ['#8e2de2','#c33764','#4CAF50']; // noche
+/* Ondas */
+class Wave{
+  constructor(f,a,p){this.f=f;this.a=a;this.p=p}
 }
+const waves=[
+  new Wave(0.008,25,0),
+  new Wave(0.01,30,50),
+  new Wave(0.012,20,100)
+];
 
-let colors=getColorsByHour();
-
-/* Ondas tipo agua */
-class Wave{ constructor(freq,amp,phase){ this.freq=freq; this.amp=amp; this.phase=phase; } }
-const waves=[new Wave(0.008,20,0), new Wave(0.01,25,50), new Wave(0.012,15,100)];
-
-/* Círculos suaves */
+/* Círculos */
 class Circle{
-  constructor(){ this.reset(); }
+  constructor(){this.reset()}
   reset(){
-    this.x=Math.random()*width;
-    this.y=Math.random()*height;
-    this.radius=15+Math.random()*40;
-    this.speed=0.003+Math.random()*0.008;
-    this.angle=Math.random()*Math.PI*2;
-    this.color=colors[Math.floor(Math.random()*colors.length)];
+    this.x=Math.random()*w;
+    this.y=Math.random()*h;
+    this.r=20+Math.random()*40;
+    this.v=0.003+Math.random()*0.006;
+    this.a=Math.random()*Math.PI*2;
+    this.c=colors[Math.floor(Math.random()*colors.length)];
   }
-  update(time){
+  update(t){
     let dx=(mouse.x-this.x)*0.0015;
     let dy=(mouse.y-this.y)*0.0015;
-    let waveY=0;
-    waves.forEach(w=>{ waveY+=Math.sin(this.x*w.freq+time*0.002+w.phase)*w.amp; });
-    waveY/=waves.length;
-    this.x+=Math.cos(this.angle+time*0.0001)*this.speed*50+dx;
-    this.y+=Math.sin(this.angle+time*0.0001)*this.speed*50+dy+waveY*0.03;
-    if(this.x-this.radius>width||this.x+this.radius<0||this.y-this.radius>height||this.y+this.radius<0) this.reset();
+    let wy=0;
+    waves.forEach(w=>wy+=Math.sin(this.x*w.f+t*0.002+w.p)*w.a);
+    wy/=waves.length;
+    this.x+=Math.cos(this.a+t*0.0001)*this.v*60+dx;
+    this.y+=Math.sin(this.a+t*0.0001)*this.v*60+dy+wy*0.03;
+    if(this.x<-100||this.x>w+100||this.y<-100||this.y>h+100) this.reset();
   }
-  draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.radius,0,Math.PI*2); ctx.fillStyle=this.color+'50'; ctx.fill(); }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle=this.c+'55';
+    ctx.fill();
+  }
 }
 
-const circles=[];
-for(let i=0;i<30;i++) circles.push(new Circle());
+const circles=Array.from({length:30},()=>new Circle());
 
-/* Dibujar ondas */
-function drawWaves(time){
-  ctx.globalAlpha=0.2;
-  waves.forEach(w=>{
+function drawWaves(t){
+  ctx.globalAlpha=0.25;
+  waves.forEach(wv=>{
     ctx.beginPath();
-    for(let i=0;i<width;i++){
-      let y=height*0.85+Math.sin(i*w.freq+time*0.002+w.phase)*w.amp;
-      if(i===0) ctx.moveTo(i,y);
-      else ctx.lineTo(i,y);
+    for(let x=0;x<w;x++){
+      let y=h*0.85+Math.sin(x*wv.f+t*0.002+wv.p)*wv.a;
+      x?ctx.lineTo(x,y):ctx.moveTo(x,y);
     }
-    ctx.lineTo(width,height);
-    ctx.lineTo(0,height);
-    ctx.closePath();
-    ctx.fillStyle=colors[0]+'20';
+    ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();
+    ctx.fillStyle=colors[0]+'33';
     ctx.fill();
   });
   ctx.globalAlpha=1;
 }
 
-function animate(time){
-  ctx.clearRect(0,0,width,height);
-  drawWaves(time);
-  circles.forEach(c=>{ c.update(time); c.draw(); });
+function animate(t){
+  ctx.clearRect(0,0,w,h);
+  drawWaves(t);
+  circles.forEach(c=>{c.update(t);c.draw()});
   requestAnimationFrame(animate);
 }
-requestAnimationFrame(animate);
+animate();
 </script>
-
 </body>
 </html>
+
