@@ -7,20 +7,22 @@ const supabaseClient = supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-// LOGIN
 async function login(email, password){
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
+  const { data, error } = await supabaseClient
+    .from('trabajadores')
+    .select('*')
+    .eq('email', email)
+    .eq('password', password) // ⚠️ texto plano
+    .single();
 
-  if(error){
+  if(error || !data){
     alert('Credenciales incorrectas');
-    console.error(error);
     return;
   }
 
-  // Login correcto
+  // Login correcto → guardar info en sessionStorage
+  sessionStorage.setItem('user', JSON.stringify(data));
+
+  // Redirigir a dashboard
   window.location.href = 'dashboard.html';
 }
-
