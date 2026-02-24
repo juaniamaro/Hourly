@@ -13,24 +13,29 @@ button{padding:10px 20px;font-size:16px;cursor:pointer;}
 
 <h1>Dashboard</h1>
 <p id="welcome"></p>
-<button onclick="logout()">Cerrar sesión</button>
+<button id="logoutBtn">Cerrar sesión</button>
 
 <script>
-const user = JSON.parse(sessionStorage.getItem('user'));
-if (!user) {
+// Comprobar si hay usuario en sessionStorage
+const userRaw = sessionStorage.getItem('user');
+
+if (!userRaw) {
   // Si no hay sesión → volver al login
   window.location.href = 'index.html';
-}
+} else {
+  // Solo parseamos si existe
+  const user = JSON.parse(userRaw);
 
-// Mostrar nombre
-document.getElementById('welcome').textContent = `Bienvenido ${user.nombre} (${user.email})`;
+  // Mostrar nombre en pantalla
+  document.getElementById('welcome').textContent = `Bienvenido ${user.nombre} (${user.email})`;
 
-function logout() {
-  sessionStorage.removeItem('user');
-  window.location.href = 'index.html';
+  // Función de logout
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    sessionStorage.removeItem('user');
+    window.location.href = 'index.html';
+  });
 }
 </script>
-
 
 </body>
 </html>
