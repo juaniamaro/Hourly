@@ -16,21 +16,13 @@ button{padding:10px 20px;font-size:16px;cursor:pointer;}
 <button id="logoutBtn">Cerrar sesión</button>
 
 <script>
-// Obtener valor raw
 const userRaw = sessionStorage.getItem('user');
-
-// Comprobar que sea válido y no "undefined"
 if (!userRaw || userRaw === 'undefined') {
-  // Si no hay sesión → volver al login
   window.location.href = 'index.html';
 } else {
-  // Parseamos seguro
   const user = JSON.parse(userRaw);
-
-  // Mostrar nombre en pantalla
   document.getElementById('welcome').textContent = `Bienvenido ${user.nombre} (${user.email})`;
-
-  // Logout seguro
+  
   document.getElementById('logoutBtn').addEventListener('click', () => {
     sessionStorage.removeItem('user');
     window.location.href = 'index.html';
