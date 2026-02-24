@@ -9,10 +9,10 @@ const supabaseClient = supabase.createClient(
 
 // LOGIN usando función RPC login_trabajador
 async function login(email, password){
-  const { data, error } = await supabaseClient.rpc('login_trabajador', {
-    _email: email,
-    _password: password
-  });
+const { data, error } = await supabaseClient.rpc('login_trabajador', {
+  email_input: email,
+  password_input: password
+});
 
   console.log('Login RPC data:', data, 'error:', error);
 
