@@ -16,12 +16,13 @@ const { data, error } = await supabaseClient.rpc('login_trabajador', {
 
   console.log('Login RPC data:', data, 'error:', error);
 
-  if(error || !data || data.length===0){
-    alert('Credenciales incorrectas');
-    return;
-  }
+ // Login correcto
+if (error || !data || data.error) {
+  alert(data?.error || 'Credenciales incorrectas');
+  return;
+}
 
-  // Guardar usuario en sessionStorage
-  sessionStorage.setItem('user', JSON.stringify(data[0]));
-  window.location.href = 'dashboard.html';
+// Guardar correctamente
+sessionStorage.setItem('user', JSON.stringify(data));
+window.location.href = 'dashboard.html';
 }
