@@ -1,780 +1,126 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hourly · Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box
-}
-
-html,body{
-  width:100%;
-  height:100%;
-  font-family:'Segoe UI',Tahoma,Verdana,sans-serif;
-  overflow:hidden;
-}
-
-canvas{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  z-index:0;
-}
-
-.container{
-  position:relative;
-  z-index:1;
-  display:flex;
-  width:100%;
-  height:100%;
-  color:#fff;
-}
-
-.left,.right{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.left{
-  flex-direction:column;
-  text-align:center;
-  padding:40px;
-}
-
-.login-container{
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(15px);
-  padding:50px 35px;
-  border-radius:16px;
-  width:100%;
-  max-width:400px;
-  box-shadow:0 10px 35px rgba(0,0,0,0.35);
-}
-
-input{
-  width:100%;
-  padding:14px;
-  margin:12px 0;
-  border:none;
-  border-radius:10px;
-  background:rgba(255,255,255,0.15);
-  color:#fff;
-  font-size:15px;
-  outline:none;
-}
-
-input::placeholder{
-  color:#eee
-}
-
-button{
-  width:100%;
-  padding:15px;
-  margin-top:20px;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
-  font-weight:bold;
-  color:#fff;
-  cursor:pointer;
-  background:linear-gradient(135deg,#160F42,#516A70);
-}
-
-button:hover{
-  opacity:0.9
-}
-
-.clock{
-  font-size:2.3em;
-  font-weight:bold;
-  margin-top:20px;
-}
-
-.weather{
-  margin-top:15px;
-  font-size:18px;
-  line-height:1.6;
-  opacity:0.95;
-  min-height:60px;
-}
-
-.location{
-  font-size:15px;
-  opacity:0.75;
-}
-
-svg{
-  width:280px;
-  height:100px;
-  margin-bottom:10px;
-}
-
-@media(max-width:900px){
-
-  html,body{
-    overflow:auto;
-  }
-
-  .container{
-    flex-direction:column;
-    min-height:100%;
-  }
-
-  .left{
-    padding:30px 20px;
-  }
-
-  .clock{
-    font-size:1.6em;
-  }
-
-  .weather{
-    font-size:16px;
-  }
-
-  .right{
-    padding:20px;
-  }
-}
-</style>
+    <title>Hourly · Login</title>
+  
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<canvas id="bg"></canvas>
+    <canvas id="bg"></canvas>
 
-<div class="container">
+    <main class="container">
 
-  <div class="left">
+        <section class="left">
 
-    <!-- LOGO HOURLY -->
-    <svg viewBox="0 0 340 100">
+            <!-- LOGO HOURLY -->
+            <svg class="logo" viewBox="0 0 340 100" aria-label="Hourly">
 
-      <text x="0" y="80" font-size="80" fill="#ffffff">
-        H
-      </text>
+                <text x="0" y="80" font-size="80" fill="#ffffff">
+                    H
+                </text>
 
-      <!-- O como reloj -->
-      <g id="clockO" transform="translate(90,55)">
+                <!-- O como reloj -->
+                <g id="clockO" transform="translate(90,55)">
 
-        <circle
-          cx="0"
-          cy="0"
-          r="22"
-          stroke="#ffffff"
-          stroke-width="4"
-          fill="none"
-        />
+                    <circle
+                        cx="0"
+                        cy="0"
+                        r="22"
+                        stroke="#ffffff"
+                        stroke-width="4"
+                        fill="none"
+                    />
 
-        <line
-          id="secHand"
-          x1="0"
-          y1="0"
-          x2="0"
-          y2="-16"
-          stroke="#ffffff"
-          stroke-width="3"
-          stroke-linecap="round"
-        />
+                    <line
+                        id="secHand"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="-16"
+                        stroke="#ffffff"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                    />
 
-      </g>
+                </g>
 
-      <text x="120" y="80" font-size="80" fill="#ffffff">
-        URLY
-      </text>
+                <text x="120" y="80" font-size="80" fill="#ffffff">
+                    URLY
+                </text>
 
-    </svg>
+            </svg>
 
-    <!-- RELOJ -->
-    <div class="clock" id="clock"></div>
 
-    <!-- TIEMPO -->
-    <div class="weather" id="weather">
-      📍 Detectando ubicación...
-    </div>
+            <!-- RELOJ -->
+            <div
+                class="clock"
+                id="clock">
+            </div>
 
-  </div>
+            <!-- UBICACIÓN + TIEMPO -->
+            <div
+                class="weather"
+                id="weather">
 
+                📍 Detectando ubicación...
 
-  <!-- LOGIN -->
-  <div class="right">
+            </div>
 
-    <div class="login-container">
+        </section>
 
-      <input
-        type="email"
-        id="email"
-        placeholder="Correo electrónico"
-        autocomplete="email"
-      >
+        <section class="right">
 
-      <input
-        type="password"
-        id="password"
-        placeholder="Contraseña"
-        autocomplete="current-password"
-      >
+            <div class="login-container">
 
-      <button onclick="handleLogin()">
-        Iniciar sesión
-      </button>
+                <form id="loginForm">
 
-    </div>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Correo electrónico"
+                        autocomplete="email"
+                        required
+                    >
 
-  </div>
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Contraseña"
+                        autocomplete="current-password"
+                        required
+                    >
 
-</div>
+                    <button
+                        type="submit"
+                        id="loginButton">
 
+                        Iniciar sesión
 
-<script>
+                    </button>
 
-/* =======================
-   COLORES SEGÚN LA HORA
-======================= */
+                </form>
 
-function getTheme(){
+                <!-- Mensaje de error -->
+                <div
+                    id="loginMessage"
+                    class="login-message">
+                </div>
 
-  const h = new Date().getHours();
+            </div>
 
-  if(h >= 6 && h < 12){
+        </section>
 
-    return {
-      bg:'#D6A000',
-      colors:[
-        '#FFF0A6',
-        '#FCF1BB',
-        '#FCFADC'
-      ]
-    };
+    </main>
 
-  }
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  if(h >= 12 && h < 20){
-
-    return {
-      bg:'#5A0F14',
-      colors:[
-        '#FF4D6D',
-        '#C9184A',
-        '#FF758F'
-      ]
-    };
-
-  }
-
-  return {
-    bg:'#1B003B',
-    colors:[
-      '#8E2DE2',
-      '#C33764',
-      '#5F0F99'
-    ]
-  };
-
-}
-
-
-const theme = getTheme();
-
-document.body.style.background = theme.bg;
-
-let colors = theme.colors;
-
-
-/* =======================
-   RELOJ GRANDE
-======================= */
-
-function updateClock(){
-
-  const now = new Date();
-
-  document.getElementById('clock').textContent =
-
-    now.toLocaleDateString(
-      'es-ES',
-      {
-        weekday:'long',
-        day:'numeric',
-        month:'long'
-      }
-    )
-
-    +
-
-    ' · '
-
-    +
-
-    now.toLocaleTimeString(
-      'es-ES'
-    );
-
-}
-
-setInterval(updateClock,1000);
-
-updateClock();
-
-
-/* =======================
-   RELOJ DE LA O
-======================= */
-
-function updateClockO(){
-
-  const sec = new Date().getSeconds();
-
-  document
-    .getElementById('secHand')
-    .setAttribute(
-      'transform',
-      `rotate(${sec * 6})`
-    );
-
-}
-
-setInterval(updateClockO,1000);
-
-updateClockO();
-
-
-/* =======================
-   CANVAS FONDO
-======================= */
-
-const canvas =
-  document.getElementById('bg');
-
-const ctx =
-  canvas.getContext('2d');
-
-let w,h;
-
-
-function resize(){
-
-  w = canvas.width = innerWidth;
-
-  h = canvas.height = innerHeight;
-
-}
-
-window.onresize = resize;
-
-resize();
-
-
-/* Ondas */
-
-class Wave{
-
-  constructor(f,a,p){
-
-    this.f = f;
-    this.a = a;
-    this.p = p;
-
-  }
-
-}
-
-
-const waves = [
-
-  new Wave(0.008,25,0),
-
-  new Wave(0.01,30,50),
-
-  new Wave(0.012,20,100)
-
-];
-
-
-function drawWaves(t){
-
-  ctx.globalAlpha = 0.25;
-
-  waves.forEach(wv => {
-
-    ctx.beginPath();
-
-    for(let x = 0; x < w; x++){
-
-      let y =
-
-        h * 0.85 +
-
-        Math.sin(
-          x * wv.f +
-          t * 0.002 +
-          wv.p
-        ) * wv.a;
-
-      x
-        ? ctx.lineTo(x,y)
-        : ctx.moveTo(x,y);
-
-    }
-
-    ctx.lineTo(w,h);
-
-    ctx.lineTo(0,h);
-
-    ctx.closePath();
-
-    ctx.fillStyle =
-      colors[0] + '33';
-
-    ctx.fill();
-
-  });
-
-  ctx.globalAlpha = 1;
-
-}
-
-
-function animate(t){
-
-  ctx.clearRect(
-    0,
-    0,
-    w,
-    h
-  );
-
-  drawWaves(t);
-
-  requestAnimationFrame(animate);
-
-}
-
-animate();
-
-
-/* =======================
-   GEOLOCALIZACIÓN + TIEMPO
-======================= */
-
-async function getWeather(){
-
-  const weatherElement =
-    document.getElementById('weather');
-
-
-  /* Comprobar si el navegador
-     permite geolocalización */
-
-  if(!navigator.geolocation){
-
-    weatherElement.innerHTML =
-      '📍 La geolocalización no está disponible';
-
-    return;
-
-  }
-
-
-  /* Solicitar ubicación */
-
-  navigator.geolocation.getCurrentPosition(
-
-    async function(position){
-
-      const latitude =
-        position.coords.latitude;
-
-      const longitude =
-        position.coords.longitude;
-
-
-      try{
-
-        /* =======================
-           OBTENER TIEMPO
-        ======================= */
-
-        const weatherResponse =
-          await fetch(
-
-            `https://api.open-meteo.com/v1/forecast` +
-
-            `?latitude=${latitude}` +
-
-            `&longitude=${longitude}` +
-
-            `&current=temperature_2m,apparent_temperature,weather_code` +
-
-            `&timezone=auto`
-
-          );
-
-
-        const weatherData =
-          await weatherResponse.json();
-
-
-        const temperature =
-          Math.round(
-            weatherData.current.temperature_2m
-          );
-
-
-        const feelsLike =
-          Math.round(
-            weatherData.current.apparent_temperature
-          );
-
-
-        const weatherCode =
-          weatherData.current.weather_code;
-
-
-        const weatherText =
-          getWeatherText(weatherCode);
-
-
-        /* =======================
-           OBTENER CIUDAD
-        ======================= */
-
-        let locationName =
-          'Ubicación detectada';
-
-
-        try{
-
-          const locationResponse =
-            await fetch(
-
-              `https://geocoding-api.open-meteo.com/v1/reverse` +
-
-              `?latitude=${latitude}` +
-
-              `&longitude=${longitude}` +
-
-              `&language=es`
-
-            );
-
-
-          /*
-             Si el servicio no devuelve
-             ubicación, simplemente
-             mantenemos el texto genérico.
-          */
-
-          const locationData =
-            await locationResponse.json();
-
-
-          if(
-            locationData &&
-            locationData.results &&
-            locationData.results.length > 0
-          ){
-
-            const place =
-              locationData.results[0];
-
-            locationName =
-              place.name ||
-              place.admin1 ||
-              'Ubicación detectada';
-
-          }
-
-        }catch(locationError){
-
-          console.log(
-            'No se pudo obtener el nombre de la ciudad'
-          );
-
-        }
-
-
-        /* =======================
-           MOSTRAR INFORMACIÓN
-        ======================= */
-
-        weatherElement.innerHTML =
-
-          `<div class="location">
-             📍 ${locationName}
-           </div>
-
-           <div>
-             ${weatherText} · ${temperature} °C
-           </div>
-
-           <div style="font-size:14px;opacity:0.75">
-             Sensación ${feelsLike} °C
-           </div>`;
-
-      }
-
-
-      catch(error){
-
-        console.error(
-          'Error obteniendo el tiempo:',
-          error
-        );
-
-        weatherElement.textContent =
-          '🌤️ No se ha podido obtener el tiempo';
-
-      }
-
-    },
-
-
-    function(error){
-
-      console.error(
-        'Error de geolocalización:',
-        error
-      );
-
-
-      if(error.code === 1){
-
-        weatherElement.innerHTML =
-          '📍 Permiso de ubicación rechazado';
-
-      }
-
-      else if(error.code === 2){
-
-        weatherElement.innerHTML =
-          '📍 No se pudo determinar tu ubicación';
-
-      }
-
-      else if(error.code === 3){
-
-        weatherElement.innerHTML =
-          '📍 Tiempo de espera agotado';
-
-      }
-
-      else{
-
-        weatherElement.innerHTML =
-          '📍 No se pudo detectar la ubicación';
-
-      }
-
-    },
-
-    {
-      enableHighAccuracy:true,
-      timeout:10000,
-      maximumAge:300000
-    }
-
-  );
-
-}
-
-
-/* =======================
-   CÓDIGOS METEOROLÓGICOS
-======================= */
-
-function getWeatherText(code){
-
-  if(code === 0)
-    return '☀️ Despejado';
-
-
-  if([1,2,3].includes(code))
-    return '⛅ Parcialmente nublado';
-
-
-  if([45,48].includes(code))
-    return '🌫️ Niebla';
-
-
-  if([51,53,55,56,57].includes(code))
-    return '🌦️ Llovizna';
-
-
-  if([61,63,65,66,67].includes(code))
-    return '🌧️ Lluvia';
-
-
-  if([71,73,75,77].includes(code))
-    return '❄️ Nieve';
-
-
-  if([80,81,82].includes(code))
-    return '🌦️ Chubascos';
-
-
-  if([95,96,99].includes(code))
-    return '⛈️ Tormenta';
-
-
-  return '🌤️ Tiempo variable';
-
-}
-
-
-/* Ejecutar */
-
-getWeather();
-
-
-</script>
-
-
-<!-- =======================
-     SUPABASE
-======================= -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-</script>
-
-<script src="js/auth.js"></script>
-
-
-<script>
-
-/* =======================
-   LOGIN
-======================= */
-
-function handleLogin(){
-
-  const email =
-    String(
-      document.getElementById('email').value
-    );
-
-  const password =
-    String(
-      document.getElementById('password').value
-    );
-
-  login(
-    email,
-    password
-  );
-
-}
-
-</script>
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
 
 </body>
 </html>
