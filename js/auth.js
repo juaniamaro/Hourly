@@ -1,11 +1,11 @@
 
 
 const SUPABASE_URL =
-    'TU_SUPABASE_URL';
+    'https://zcaoypeekzadnrlslzey.supabase.co';
 
 
 const SUPABASE_ANON_KEY =
-    'TU_SUPABASE_ANON_KEY';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYW95cGVla3phZG5ybHNsemV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2Nzg0MzgsImV4cCI6MjEwMzI1NDQzOH0.jhRakMwqe8_0BduUf2IryXZrMkkZa3AprWocr-cAs_E';
 
 
 const supabaseClient =
