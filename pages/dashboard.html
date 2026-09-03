@@ -1,347 +1,584 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Hourly · Dashboard</title>
 
-    <style>
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-
-            min-height: 100vh;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            font-family:
-                'Segoe UI',
-                Tahoma,
-                Verdana,
-                sans-serif;
-
-            background: #1B003B;
-
-            color: white;
-
-        }
-
-        .dashboard {
-
-            width: 90%;
-            max-width: 700px;
-
-            padding: 50px;
-
-            text-align: center;
-
-            background: rgba(255, 255, 255, 0.08);
-
-            border: 1px solid rgba(255, 255, 255, 0.15);
-
-            border-radius: 20px;
-
-            backdrop-filter: blur(10px);
-
-        }
-
-        .logo {
-
-            font-size: 42px;
-
-            font-weight: 700;
-
-            margin-bottom: 40px;
-
-            letter-spacing: 2px;
-
-        }
-
-        h1 {
-
-            font-size: 32px;
-
-            margin-bottom: 15px;
-
-        }
-
-        #username {
-
-            color: #FF758F;
-
-        }
-
-        .email {
-
-            margin-top: 10px;
-
-            opacity: 0.7;
-
-            font-size: 15px;
-
-        }
-
-        .logout {
-
-            margin-top: 35px;
-
-            padding: 13px 30px;
-
-            border: none;
-
-            border-radius: 10px;
-
-            background: #C9184A;
-
-            color: white;
-
-            font-size: 16px;
-
-            cursor: pointer;
-
-            transition: 0.3s;
-
-        }
-
-        .logout:hover {
-
-            background: #FF4D6D;
-
-            transform: translateY(-2px);
-
-        }
-
-    </style>
-
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/dashboard.css">
 </head>
-
 
 <body>
 
+    <div class="app">
 
-    <main class="dashboard">
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
 
+        <aside class="sidebar">
 
-        <div class="logo">
-            HOURLY
-        </div>
+            <div class="brand">
+                <span class="brand-main">Hour</span><span class="brand-accent">ly</span>
+            </div>
 
+            <div class="user-card">
 
-        <h1>
+                <div class="user-avatar" id="userAvatar">
+                    U
+                </div>
 
-            Bienvenido,
-            
-            <span id="username">
-                Cargando...
-            </span>
+                <div class="user-info">
 
-        </h1>
+                    <span class="user-label">
+                        Usuario
+                    </span>
 
+                    <strong id="sidebarName">
+                        Cargando...
+                    </strong>
 
-        <p
-            class="email"
-            id="email">
-        </p>
+                </div>
 
+            </div>
 
-        <button
-            class="logout"
-            id="logoutBtn">
 
-            Cerrar sesión
+            <!-- NAVEGACIÓN -->
 
-        </button>
+            <nav class="navigation">
 
+                <button
+                    class="nav-item active"
+                    data-page="inicio">
 
-    </main>
+                    <span class="nav-icon">⌂</span>
 
+                    <span>
+                        Inicio
+                    </span>
 
-    <!-- SUPABASE -->
+                </button>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+                <button
+                    class="nav-item"
+                    data-page="historial">
 
-    <script>
+                    <span class="nav-icon">◷</span>
 
-        const SUPABASE_URL =
-            'https://zcaoypeekzadnrlslzey.supabase.co';
+                    <span>
+                        Historial
+                    </span>
 
+                </button>
 
-        const SUPABASE_ANON_KEY =
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYW95cGVla3phZG5ybHNsemV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2Nzg0MzgsImV4cCI6MjEwMzI1NDQzOH0.jhRakMwqe8_0BduUf2IryXZrMkkZa3AprWocr-cAs_E';
 
+                <button
+                    class="nav-item"
+                    data-page="perfil">
 
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
-            );
+                    <span class="nav-icon">◯</span>
 
+                    <span>
+                        Perfil
+                    </span>
 
-        /*
-         * CARGAR USUARIO
-         */
+                </button>
 
-        async function loadUser() {
+            </nav>
 
-            try {
 
-                /*
-                 * Primero obtenemos
-                 * el usuario autenticado.
-                 */
+            <!-- LOGOUT -->
 
-                const {
-                    data: authData,
-                    error: authError
-                } =
-                    await supabaseClient.auth.getUser();
+            <div class="sidebar-bottom">
 
+                <button
+                    class="logout-button"
+                    id="logoutButton">
 
-                if (
-                    authError ||
-                    !authData.user
-                ) {
+                    <span>↪</span>
 
-                    window.location.href =
-                        '../index.html';
+                    <span>
+                        Cerrar sesión
+                    </span>
 
-                    return;
+                </button>
 
-                }
+            </div>
 
+        </aside>
 
-                const user =
-                    authData.user;
 
 
-                /*
-                 * Buscamos el perfil
-                 * en la tabla profiles.
-                 *
-                 * profiles.id debe ser
-                 * igual a auth.users.id
-                 */
+        <!-- =========================
+             CONTENIDO PRINCIPAL
+        ========================== -->
 
-                const {
-                    data: profile,
-                    error: profileError
-                } =
-                    await supabaseClient
-                        .from('profiles')
-                        .select('nombre')
-                        .eq('id', user.id)
-                        .single();
+        <main class="main-content">
 
 
-                if (profileError) {
+            <!-- HEADER -->
 
-                    console.error(
-                        'Error obteniendo el perfil:',
-                        profileError
-                    );
+            <header class="topbar">
 
-                    document.getElementById(
-                        'username'
-                    ).textContent =
-                        'Usuario';
+                <div>
 
-                } else {
+                    <h1>
+                        Bienvenido,
+                        <span id="welcomeName">
+                            ...
+                        </span>
+                    </h1>
 
-                    /*
-                     * Mostramos profiles.nombre
-                     */
+                    <p>
+                        Control horario
+                    </p>
 
-                    document.getElementById(
-                        'username'
-                    ).textContent =
-                        profile.nombre;
+                </div>
 
-                }
 
+                <div class="topbar-date">
 
-                /*
-                 * Mostramos también
-                 * el correo de Auth.
-                 */
+                    <span>
+                        Hoy
+                    </span>
 
-                document.getElementById(
-                    'email'
-                ).textContent =
-                    user.email;
+                    <strong id="topDate">
+                        ...
+                    </strong>
 
+                </div>
 
-            } catch (error) {
+            </header>
 
-                console.error(
-                    'Error:',
-                    error
-                );
 
-            }
 
-        }
+            <!-- =================================================
+                 INICIO
+            ================================================== -->
 
+            <section
+                id="inicio"
+                class="page active">
 
-        /*
-         * CERRAR SESIÓN
-         */
 
-        document.getElementById(
-            'logoutBtn'
-        ).addEventListener(
-            'click',
-            async function () {
+                <!-- RELOJ -->
 
-                const {
-                    error
-                } =
-                    await supabaseClient.auth.signOut();
+                <div class="clock-card">
 
+                    <div class="clock-content">
 
-                if (!error) {
+                        <span class="clock-label">
+                            HORA ACTUAL
+                        </span>
 
-                    window.location.href =
-                        '../index.html';
+                        <div
+                            class="clock"
+                            id="clock">
 
-                } else {
+                            00:00:00
 
-                    console.error(
-                        'Error cerrando sesión:',
-                        error
-                    );
+                        </div>
 
-                }
+                        <div
+                            class="date"
+                            id="date">
 
-            }
-        );
+                            ...
 
+                        </div>
 
-        /*
-         * INICIAR DASHBOARD
-         */
 
-        loadUser();
+                        <!-- ESTADO -->
 
-    </script>
+                        <div
+                            class="status status-off"
+                            id="status">
 
+                            <span class="status-dot"></span>
+
+                            <span id="statusText">
+                                Fuera de turno
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RESUMEN -->
+
+                <div class="stats-grid">
+
+
+                    <!-- HORAS -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-header">
+
+                            <span>
+                                Horas trabajadas
+                            </span>
+
+                            <div class="stat-icon green">
+                                ◷
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="stat-value"
+                            id="workedHours">
+
+                            00:00:00
+
+                        </div>
+
+
+                        <span class="stat-description">
+                            Tiempo trabajado hoy
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- ÚLTIMO FICHAJE -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-header">
+
+                            <span>
+                                Último fichaje
+                            </span>
+
+                            <div class="stat-icon">
+                                ↻
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="last-punch"
+                            id="lastPunch">
+
+                            —
+
+                        </div>
+
+
+                        <span
+                            class="stat-description"
+                            id="lastPunchDate">
+
+                            Sin fichajes
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FICHAJE -->
+
+                <div class="punch-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Fichaje
+                            </h2>
+
+                            <p>
+                                Registra tu entrada o salida
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOTONES -->
+
+                    <div class="punch-actions">
+
+                        <button
+                            id="entryButton"
+                            class="punch-button entry-button">
+
+                            <span class="button-icon">
+                                ✓
+                            </span>
+
+                            <span class="button-content">
+
+                                <strong>
+                                    Fichar entrada
+                                </strong>
+
+                                <small>
+                                    Comenzar jornada
+                                </small>
+
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            id="exitButton"
+                            class="punch-button exit-button"
+                            disabled>
+
+                            <span class="button-icon">
+                                ↪
+                            </span>
+
+                            <span class="button-content">
+
+                                <strong>
+                                    Fichar salida
+                                </strong>
+
+                                <small>
+                                    Finalizar jornada
+                                </small>
+
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- OBSERVACIONES -->
+
+                    <div class="observations">
+
+                        <label for="observations">
+                            Observaciones
+                        </label>
+
+                        <textarea
+                            id="observations"
+                            placeholder="Añade una observación para este fichaje..."></textarea>
+
+                        <span class="field-help">
+                            La observación se guardará junto al fichaje realizado.
+                        </span>
+
+                    </div>
+
+
+                    <!-- MENSAJE -->
+
+                    <div
+                        id="message"
+                        class="message">
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 HISTORIAL
+            ================================================== -->
+
+            <section
+                id="historial"
+                class="page">
+
+
+                <div class="page-title">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            REGISTROS
+                        </span>
+
+                        <h2>
+                            Historial de fichajes
+                        </h2>
+
+                        <p>
+                            Consulta tus fichajes realizados hoy.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="history-card">
+
+                    <div
+                        id="historyList"
+                        class="history-list">
+
+                        <div class="empty-state">
+
+                            <div class="empty-icon">
+                                ◷
+                            </div>
+
+                            <p>
+                                Cargando fichajes...
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PERFIL
+            ================================================== -->
+
+            <section
+                id="perfil"
+                class="page">
+
+
+                <div class="page-title">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            CUENTA
+                        </span>
+
+                        <h2>
+                            Mi perfil
+                        </h2>
+
+                        <p>
+                            Información de tu cuenta.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-card">
+
+
+                    <!-- AVATAR -->
+
+                    <div class="profile-header">
+
+                        <div
+                            class="profile-avatar"
+                            id="profileAvatar">
+
+                            U
+
+                        </div>
+
+                        <div>
+
+                            <h3 id="profileName">
+                                Cargando...
+                            </h3>
+
+                            <span>
+                                Usuario de Hourly
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- INFORMACIÓN -->
+
+                    <div class="profile-information">
+
+
+                        <div class="profile-row">
+
+                            <span class="profile-label">
+                                Nombre
+                            </span>
+
+                            <strong id="profileNameData">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-row">
+
+                            <span class="profile-label">
+                                Correo electrónico
+                            </span>
+
+                            <strong id="profileEmail">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-row">
+
+                            <span class="profile-label">
+                                ID de usuario
+                            </span>
+
+                            <strong
+                                id="profileId"
+                                class="profile-id">
+
+                                —
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="../js/dashboard.js"></script>
 
 </body>
 
 </html>
-
