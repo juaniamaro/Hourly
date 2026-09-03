@@ -1,34 +1,274 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hourly · Dashboard</title>
-<style>
-body{font-family:'Segoe UI',Tahoma,Verdana,sans-serif;background:#1B003B;color:#fff;padding:40px;}
-button{padding:10px 20px;font-size:16px;cursor:pointer;}
-</style>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Hourly · Dashboard</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family:
+                'Segoe UI',
+                Tahoma,
+                Verdana,
+                sans-serif;
+
+            background: #1B003B;
+
+            color: white;
+
+        }
+
+        .dashboard {
+
+            width: 90%;
+            max-width: 700px;
+
+            padding: 50px;
+
+            text-align: center;
+
+            background: rgba(255, 255, 255, 0.08);
+
+            border: 1px solid rgba(255, 255, 255, 0.15);
+
+            border-radius: 20px;
+
+            backdrop-filter: blur(10px);
+
+        }
+
+        .logo {
+
+            font-size: 42px;
+
+            font-weight: 700;
+
+            margin-bottom: 40px;
+
+            letter-spacing: 2px;
+
+        }
+
+        h1 {
+
+            font-size: 32px;
+
+            margin-bottom: 15px;
+
+        }
+
+        #username {
+
+            color: #FF758F;
+
+        }
+
+        .email {
+
+            margin-top: 10px;
+
+            opacity: 0.7;
+
+            font-size: 15px;
+
+        }
+
+        .logout {
+
+            margin-top: 35px;
+
+            padding: 13px 30px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #C9184A;
+
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+        .logout:hover {
+
+            background: #FF4D6D;
+
+            transform: translateY(-2px);
+
+        }
+
+    </style>
+
 </head>
+
+
 <body>
 
-<h1>Dashboard</h1>
-<p id="welcome"></p>
-<button id="logoutBtn">Cerrar sesión</button>
 
-<script>
-const userRaw = sessionStorage.getItem('user');
-if (!userRaw || userRaw === 'undefined') {
-  window.location.href = 'index.html';
-} else {
-  const user = JSON.parse(userRaw);
-  document.getElementById('welcome').textContent = `Bienvenido ${user.nombre} (${user.email})`;
-  
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    sessionStorage.removeItem('user');
-    window.location.href = 'index.html';
-  });
-}
-</script>
+    <main class="dashboard">
+
+
+        <div class="logo">
+            HOURLY
+        </div>
+
+
+        <h1>
+            Bienvenido,
+            <span id="username">
+                Usuario
+            </span>
+        </h1>
+
+
+        <p class="email" id="email"></p>
+
+
+        <button
+            class="logout"
+            id="logoutBtn"
+        >
+            Cerrar sesión
+        </button>
+
+
+    </main>
+
+
+    <!-- Supabase -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
+        const SUPABASE_URL =
+            'https://zcaoypeekzadnrlslzey.supabase.co';
+
+
+        const SUPABASE_ANON_KEY =
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjYW95cGVla3phZG5ybHNsemV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2Nzg0MzgsImV4cCI6MjEwMzI1NDQzOH0.jhRakMwqe8_0BduUf2IryXZrMkkZa3AprWocr-cAs_E';
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+
+        async function loadUser() {
+
+            const {
+                data,
+                error
+            } = await supabaseClient.auth.getUser();
+
+
+            if (error || !data.user) {
+
+                window.location.href =
+                    '../index.html';
+
+                return;
+
+            }
+
+
+            const user =
+                data.user;
+
+
+            /*
+             * Intentamos obtener el nombre
+             * desde user_metadata.
+             */
+
+            const username =
+                user.user_metadata?.nombre ||
+                user.user_metadata?.name ||
+                user.user_metadata?.full_name ||
+                user.email;
+
+
+            document.getElementById(
+                'username'
+            ).textContent = username;
+
+
+            document.getElementById(
+                'email'
+            ).textContent = user.email;
+
+        }
+
+
+        /*
+         * Cerrar sesión
+         */
+
+        document.getElementById(
+            'logoutBtn'
+        ).addEventListener(
+            'click',
+            async function () {
+
+                const {
+                    error
+                } =
+                    await supabaseClient.auth.signOut();
+
+
+                if (!error) {
+
+                    window.location.href =
+                        '../index.html';
+
+                }
+
+            }
+        );
+
+
+        /*
+         * Cargar usuario
+         */
+
+        loadUser();
+
+    </script>
+
 
 </body>
+
 </html>
+```
